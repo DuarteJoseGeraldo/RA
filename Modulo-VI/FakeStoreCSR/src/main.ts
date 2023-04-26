@@ -1,17 +1,17 @@
 import express, { Response, Request } from "express";
 import { router } from "./routes";
 
-const app = express();
+const api = express();
 const port = 3000;
 
-app.use(express.json());
+api.use(express.json());
 
-app.get("/", (req: Request, res: Response) => {
+api.get("/", (req: Request, res: Response) => {
   res.send("FakeStore API is Runiing");
 });
 
-app.use("/fakestoreapi.com", router);
+api.use("/fakestoreapi.com", router);
 
-app.listen(port, () => {
+api.listen(port, () => {
   console.log(`API listening on port ${port}`);
 });
