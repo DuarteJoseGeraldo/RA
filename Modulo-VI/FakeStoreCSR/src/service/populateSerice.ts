@@ -2,7 +2,7 @@ import productService from "./productService";
 import categoryService from "./categoryService";
 
 import populateRepository from "../repository/populateRepository";
-import { Product, apiProduct } from "../repository/productRepository";
+import { apiProduct } from "../repository/productRepository";
 
 const populateCategories = async () => {
   try {
