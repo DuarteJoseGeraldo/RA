@@ -49,7 +49,7 @@ const findByID = async (productId: number) => {
         },
       };
     });
-    return apiProduct;
+    return apiProduct[0];
   } catch (error) {
     throw error;
   }
