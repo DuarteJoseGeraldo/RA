@@ -1,8 +1,6 @@
 import { Request, Response } from "express";
-import knex from "knex";
-import config from "../../knexfile";
 import populateSerice from "../service/populateSerice";
-const knexInstance = knex(config);
+
 const insertAllCategories = async (req: Request, res: Response) => {
   try {
     const categories = await populateSerice.populateCategories();
@@ -12,6 +10,13 @@ const insertAllCategories = async (req: Request, res: Response) => {
   }
 };
 
-const insertAllProducts = async (req: Request, res: Response) => {};
+const insertAllProducts = async (req: Request, res: Response) => {
+  try {
+    const products = await populateSerice.populateProducts();
+    res.status(200).send(products);
+  } catch (error: any) {
+    res.send(error.message ? { error: error.message } : error);
+  }
+};
 
 export default { insertAllCategories, insertAllProducts };

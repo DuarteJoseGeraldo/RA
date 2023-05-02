@@ -1,11 +1,8 @@
 import productService from "./productService";
 import categoryService from "./categoryService";
+
 import populateRepository from "../repository/populateRepository";
-import {
-  Product,
-  ProductWithCategoryId,
-  apiProduct,
-} from "../repository/productRepository";
+import { Product, apiProduct } from "../repository/productRepository";
 
 const populateCategories = async () => {
   try {
@@ -24,6 +21,21 @@ const populateCategories = async () => {
   }
 };
 
-const populateProducts = async () => {};
+const populateProducts = async () => {
+  try {
+    const products: any = await populateRepository.getProducts();
 
-export default { populateCategories };
+    const insertProducts = await products.map(async (product: apiProduct) => {
+      const newProduct = await productService.insertProduct(product);
+      return newProduct;
+    });
+
+    const result = await Promise.all(insertProducts);
+
+    return result;
+  } catch (error) {
+    throw error;
+  }
+};
+
+export default { populateCategories, populateProducts };

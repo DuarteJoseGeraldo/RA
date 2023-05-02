@@ -110,8 +110,8 @@ const insertProduct = async (product: apiProduct) => {
     };
 
     const id = await productRepository.insert(newProduct);
-    const result = productRepository.selectByIdWithJoin(id);
-    return result;
+    const result: any = await getByID(id);
+    return result[0];
   } catch (error) {
     throw error;
   }
