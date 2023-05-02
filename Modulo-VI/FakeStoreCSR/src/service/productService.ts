@@ -1,4 +1,4 @@
-import productModel from "../repository/productRepository";
+import productRepository from "../repository/productRepository";
 import categoryService from "./categoryService";
 import {
   Product,
@@ -8,7 +8,7 @@ import {
 
 const getAll = async () => {
   try {
-    const products = await productModel.indexWithJoin();
+    const products = await productRepository.indexWithJoin();
     const apiProduct = products.map((item: Product) => {
       return {
         id: item.id,
@@ -32,7 +32,7 @@ const getAll = async () => {
 const getByID = async (productId: number) => {
   try {
     const id = productId;
-    const products: any = await productModel.selectByIdWithJoin(id);
+    const products: any = await productRepository.selectByIdWithJoin(id);
     if (!products[0]) throw new Error("Product not Found");
 
     const apiProduct = products.map((item: Product) => {
@@ -57,7 +57,9 @@ const getByID = async (productId: number) => {
 
 const getByCategoryID = async (catId: number) => {
   try {
-    const products: any = await productModel.selectByCategoryIdWithJoin(catId);
+    const products: any = await productRepository.selectByCategoryIdWithJoin(
+      catId
+    );
 
     if (!products[0]) throw new Error("Product not Found");
     const apiProduct = products.map((item: Product) => {
@@ -82,7 +84,7 @@ const getByCategoryID = async (catId: number) => {
 
 const hasProductOfThisCartegory = async (cateId: number) => {
   try {
-    const product: any = productModel.selectByCategoryIdWithJoin(cateId);
+    const product: any = productRepository.selectByCategoryIdWithJoin(cateId);
     if (!product[0]) {
       return false;
     }
@@ -107,8 +109,8 @@ const insertProduct = async (product: apiProduct) => {
       countRate: product.rating.count,
     };
 
-    const id = await productModel.insert(newProduct);
-    const result = productModel.selectByIdWithJoin(id);
+    const id = await productRepository.insert(newProduct);
+    const result = productRepository.selectByIdWithJoin(id);
     return result;
   } catch (error) {
     throw error;
@@ -117,7 +119,7 @@ const insertProduct = async (product: apiProduct) => {
 
 const updateProduct = async (id: number, product: apiProduct) => {
   try {
-    const fProduct: any = await productModel.selectByIdWithJoin(id);
+    const fProduct: any = await productRepository.selectByIdWithJoin(id);
     if (!fProduct) {
       throw new Error("Product not Found");
     }
@@ -134,8 +136,8 @@ const updateProduct = async (id: number, product: apiProduct) => {
       rate: product.rating.rate,
       countRate: product.rating.count,
     };
-    await productModel.update(id, newData);
-    const updated = await productModel.selectByIdWithJoin(id);
+    await productRepository.update(id, newData);
+    const updated = await productRepository.selectByIdWithJoin(id);
     return updated;
   } catch (error) {
     throw error;
@@ -144,11 +146,11 @@ const updateProduct = async (id: number, product: apiProduct) => {
 
 const deleteProduct = async (id: number) => {
   try {
-    const fProduct: any = await productModel.selectByIdWithJoin(id);
+    const fProduct: any = await productRepository.selectByIdWithJoin(id);
     if (!fProduct[0]) {
       throw new Error("Product not Found");
     }
-    await productModel.remove(id);
+    await productRepository.remove(id);
     return {
       message: "Product successfully deleted",
       prduct: fProduct[0],

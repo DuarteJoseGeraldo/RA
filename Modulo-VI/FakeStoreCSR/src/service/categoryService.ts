@@ -1,10 +1,10 @@
 import { Category } from "../repository/categoryRepository";
-import categoryModel from "../repository/categoryRepository";
+import categoryRepository from "../repository/categoryRepository";
 import productService from "./productService";
 
 const getAll = async () => {
   try {
-    const result = await categoryModel.index();
+    const result = await categoryRepository.index();
 
     return result.map((item: Category) => item.name);
   } catch (error) {
@@ -14,7 +14,7 @@ const getAll = async () => {
 
 const getProducts = async (name: string) => {
   try {
-    const fCategory: any = await categoryModel.selectByName(name);
+    const fCategory: any = await categoryRepository.selectByName(name);
     if (!fCategory[0]) {
       throw new Error("Category not Found");
     }
@@ -30,7 +30,7 @@ const getProducts = async (name: string) => {
 
 const findCategoryByName = async (name: string) => {
   try {
-    const result = await categoryModel.selectByName(name);
+    const result = await categoryRepository.selectByName(name);
     if (!result.length) throw new Error("Category not Found");
     return result;
   } catch (error) {
@@ -40,7 +40,7 @@ const findCategoryByName = async (name: string) => {
 
 const findCategoryById = async (id: number) => {
   try {
-    const result = await categoryModel.selectById(id);
+    const result = await categoryRepository.selectById(id);
     if (!result.length) throw new Error("Category not Found");
     return result;
   } catch (error) {
@@ -57,7 +57,7 @@ const insertCategory = async (category: Category) => {
       }
     } catch (error: any) {
       if (error.message === "Category not Found") {
-        const id: any = await categoryModel.insert(category);
+        const id: any = await categoryRepository.insert(category);
         const newCategory = await findCategoryById(id[0]);
         return newCategory;
       } else {
@@ -76,7 +76,7 @@ const updateCategory = async (oldName: string, newData: Category) => {
       throw new Error("Category not Found");
     }
     const id = parseInt(fCategory[0].id);
-    await categoryModel.update(id, newData);
+    await categoryRepository.update(id, newData);
     const result = await findCategoryById(id);
     return result;
   } catch (error) {
@@ -99,7 +99,7 @@ const deleteCategory = async (name: string) => {
         "There are still products of this category registered... Could not delete category"
       );
 
-    await categoryModel.remove(fCategory[0].id);
+    await categoryRepository.remove(fCategory[0].id);
     const result = {
       message: "Category successfully deleted",
       category: fCategory[0],
