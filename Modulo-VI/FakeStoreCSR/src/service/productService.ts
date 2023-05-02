@@ -29,7 +29,7 @@ const getAll = async () => {
   }
 };
 
-const getByID = async (productId: number) => {
+const findByID = async (productId: number) => {
   try {
     const id = productId;
     const products: any = await productRepository.selectByIdWithJoin(id);
@@ -55,7 +55,7 @@ const getByID = async (productId: number) => {
   }
 };
 
-const getByCategoryID = async (catId: number) => {
+const findByCategoryID = async (catId: number) => {
   try {
     const products: any = await productRepository.selectByCategoryIdWithJoin(
       catId
@@ -110,7 +110,7 @@ const insertProduct = async (product: apiProduct) => {
     };
 
     const id = await productRepository.insert(newProduct);
-    const result: any = await getByID(id);
+    const result: any = await findByID(id);
     return result[0];
   } catch (error) {
     throw error;
@@ -163,8 +163,8 @@ const deleteProduct = async (id: number) => {
 export default {
   getAll,
   hasProductOfThisCartegory,
-  getByCategoryID,
-  getByID,
+  findByCategoryID,
+  findByID,
   insertProduct,
   updateProduct,
   deleteProduct,

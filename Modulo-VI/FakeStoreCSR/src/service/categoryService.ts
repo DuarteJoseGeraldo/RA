@@ -18,7 +18,9 @@ const getProducts = async (name: string) => {
     if (!fCategory[0]) {
       throw new Error("Category not Found");
     }
-    const products: any = await productService.getByCategoryID(fCategory[0].id);
+    const products: any = await productService.findByCategoryID(
+      fCategory[0].id
+    );
     if (!products[0]) {
       throw new Error("Product Not Found");
     }

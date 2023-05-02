@@ -17,7 +17,7 @@ const index = async (req: Request, res: Response) => {
 const show = async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
-    const product = await productService.getByID(id);
+    const product = await productService.findByID(id);
     res.status(200).json(product);
   } catch (error: any) {
     res.send(error.message ? { error: error.message } : error);
