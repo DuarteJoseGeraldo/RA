@@ -5,6 +5,7 @@ import {
   ProductWithCategoryId,
   apiProduct,
 } from "../repository/productRepository";
+import errorHandler from "../middlewares/errorHandler";
 
 const getAll = async () => {
   try {

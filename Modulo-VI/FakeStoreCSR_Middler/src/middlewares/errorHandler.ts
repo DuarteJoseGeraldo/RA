@@ -1,7 +1,11 @@
 import { NextFunction, Request, Response } from "express";
-
+type ErrorType = {
+  message: string;
+  status: number;
+  stack?: string;
+};
 const errorHandler = (
-  error: any,
+  error: ErrorType,
   req: Request,
   res: Response,
   next: NextFunction
@@ -14,4 +18,11 @@ const errorHandler = (
 
   res.status(status).json(errorResponse);
 };
-export default { errorHandler };
+
+const makeError = ({ message, status }: ErrorType) => {
+  return {
+    message,
+    status,
+  };
+};
+export default { errorHandler, makeError };

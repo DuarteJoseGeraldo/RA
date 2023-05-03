@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import knex from "knex";
 import config from "../../knexfile";
 import productService from "../service/productService";
+import errorHandler from "../middlewares/errorHandler";
 
 const knexInstance = knex(config);
 
@@ -14,6 +15,15 @@ const index = async (req: Request, res: Response) => {
   }
 };
 
+const insert = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const newProduct = await productService.insertProduct(req.body);
+    res.status(200).json(newProduct);
+  } catch (error: any) {
+    next(error);
+  }
+};
+
 const show = async (req: Request, res: Response) => {
   try {
     const id = parseInt(req.params.id);
@@ -21,15 +31,6 @@ const show = async (req: Request, res: Response) => {
     res.status(200).json(product);
   } catch (error: any) {
     res.send(error.message ? { error: error.message } : error);
-  }
-};
-
-const insert = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const newProduct = await productService.insertProduct(req.body);
-    res.status(200).send(newProduct);
-  } catch (error: any) {
-    next(error);
   }
 };
 
