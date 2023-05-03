@@ -1,5 +1,3 @@
-import { apiProduct } from "./productRepository";
-
 const showResult = async (callback: Function) => {
   const resultOfFunction = await callback();
   console.log(resultOfFunction);
