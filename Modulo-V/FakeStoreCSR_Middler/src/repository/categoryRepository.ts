@@ -29,29 +29,17 @@ const selectById = async (id: number) => {
 };
 
 const insert = async (item: Category) => {
-  try {
-    const id = await knexInstance("categories").insert(item);
-    return id;
-  } catch (error) {
-    throw error;
-  }
+  const id = await knexInstance("categories").insert(item);
+  return id;
 };
 
 const update = async (id: number, item: Category) => {
-  try {
-    const update = await knexInstance("categories").update(item).where({ id });
-    return update;
-  } catch (error) {
-    throw error;
-  }
+  const update = await knexInstance("categories").update(item).where({ id });
+  return update;
 };
 
 const remove = async (id: number) => {
-  try {
-    const removed = knexInstance("categories").delete().where({ id: id });
-    return removed;
-  } catch (error) {
-    throw error;
-  }
+  const removed = knexInstance("categories").delete().where({ id: id });
+  return removed;
 };
 export default { index, selectByName, selectById, insert, update, remove };

@@ -58,27 +58,23 @@ const indexWithJoin = async () => {
 };
 
 const selectByIdWithJoin = async (productId: number) => {
-  try {
-    const id = productId;
-    const product: Product[] = await knexInstance("products")
-      .select(
-        "products.id",
-        "products.title",
-        "products.price",
-        "products.description",
-        "products.title",
-        "categories.name as category",
-        "products.image",
-        "products.rate",
-        "products.countRate"
-      )
-      .join("categories", "categories.id", "=", "products.category_id")
-      .where({ "products.id": id });
+  const id = productId;
+  const product: Product[] = await knexInstance("products")
+    .select(
+      "products.id",
+      "products.title",
+      "products.price",
+      "products.description",
+      "products.title",
+      "categories.name as category",
+      "products.image",
+      "products.rate",
+      "products.countRate"
+    )
+    .join("categories", "categories.id", "=", "products.category_id")
+    .where({ "products.id": id });
 
-    return product;
-  } catch (error) {
-    throw error;
-  }
+  return product;
 };
 
 const selectByCategoryIdWithJoin = async (catId: number) => {
@@ -101,33 +97,19 @@ const selectByCategoryIdWithJoin = async (catId: number) => {
 };
 
 const insert = async (product: ProductWithCategoryId) => {
-  try {
-    const newProduct = product;
-    const newProductId: any = await knexInstance("products").insert(newProduct);
-    return newProductId[0];
-  } catch (error) {
-    throw error;
-  }
+  const newProduct = product;
+  const newProductId: any = await knexInstance("products").insert(newProduct);
+  return newProductId[0];
 };
 
 const update = async (id: number, product: ProductWithCategoryId) => {
-  try {
-    const newData = await knexInstance("products")
-      .update(product)
-      .where({ id });
-    return product;
-  } catch (error) {
-    throw error;
-  }
+  const newData = await knexInstance("products").update(product).where({ id });
+  return product;
 };
 
 const remove = async (id: number) => {
-  try {
-    const removed = await knexInstance("products").delete().where({ id });
-    return removed;
-  } catch (error) {
-    throw error;
-  }
+  const removed = await knexInstance("products").delete().where({ id });
+  return removed;
 };
 
 export default {

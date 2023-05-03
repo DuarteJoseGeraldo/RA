@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import knex from "knex";
 import config from "../../knexfile";
 import productService from "../service/productService";
-import errorHandler from "../middlewares/errorHandler";
+import { errorHandler, makeError } from "../middlewares/errorHandler";
 
 const knexInstance = knex(config);
 

@@ -25,4 +25,4 @@ const makeError = ({ message, status }: ErrorType) => {
     status,
   };
 };
-export default { errorHandler, makeError };
+export { errorHandler, makeError };

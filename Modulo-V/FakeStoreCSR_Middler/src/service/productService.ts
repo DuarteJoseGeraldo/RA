@@ -1,11 +1,11 @@
 import productRepository from "../repository/productRepository";
 import categoryService from "./categoryService";
+import { makeError } from "../middlewares/errorHandler";
 import {
   Product,
   ProductWithCategoryId,
   apiProduct,
 } from "../repository/productRepository";
-import errorHandler from "../middlewares/errorHandler";
 
 const getAll = async () => {
   try {

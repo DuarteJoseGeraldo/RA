@@ -1,18 +1,18 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import categoryService from "../service/categoryService";
 import { Category } from "../repository/categoryRepository";
 
-const index = async (req: Request, res: Response) => {
+const index = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const categories = await categoryService.getAll();
 
     res.status(200).send(categories);
   } catch (error: any) {
-    res.send(error.message ? { error: error.message } : error);
+    next(error);
   }
 };
 
-const show = async (req: Request, res: Response) => {
+const show = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const categoryName = req.params.name;
 
@@ -20,11 +20,11 @@ const show = async (req: Request, res: Response) => {
 
     res.status(200).json(products);
   } catch (error: any) {
-    res.send(error.message ? { error: error.message } : error);
+    next(error);
   }
 };
 
-const insert = async (req: Request, res: Response) => {
+const insert = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const newData: Category = req.body;
 
@@ -32,11 +32,11 @@ const insert = async (req: Request, res: Response) => {
 
     res.status(200).send(newCategory);
   } catch (error: any) {
-    res.send(error.message ? { error: error.message } : error);
+    next(error);
   }
 };
 
-const update = async (req: Request, res: Response) => {
+const update = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const category = await categoryService.updateCategory(
       req.params.name,
@@ -45,11 +45,11 @@ const update = async (req: Request, res: Response) => {
 
     res.status(200).send(category);
   } catch (error: any) {
-    res.send(error.message ? { error: error.message } : error);
+    next(error);
   }
 };
 
-const remove = async (req: Request, res: Response) => {
+const remove = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const name = req.params.name;
 
@@ -57,7 +57,7 @@ const remove = async (req: Request, res: Response) => {
 
     res.status(200).send(deleted);
   } catch (error: any) {
-    res.send(error.message ? { error: error.message } : error);
+    next(error);
   }
 };
 
