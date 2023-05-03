@@ -43,7 +43,7 @@ const findCategoryById = async (id: number) => {
       status: 400,
     });
   }
-  return result;
+  return result[0];
 };
 
 const insertCategory = async (category: Category) => {
