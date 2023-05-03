@@ -1,6 +1,6 @@
 import express, { Response, Request } from "express";
 import { router } from "./routes";
-import errorHandler from "./middlewares/errorHandler";
+import { errorHandler } from "./middlewares/errorHandler";
 
 const api = express();
 const port = 3000;
@@ -12,7 +12,7 @@ api.get("/", (req: Request, res: Response) => {
 });
 
 api.use("/fakestoreapi.com", router);
-api.use(errorHandler.errorHandler);
+api.use(errorHandler);
 
 api.listen(port, () => {
   console.log(`API listening on port ${port}`);
