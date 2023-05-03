@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import knex from "knex";
 import config from "../../knexfile";
 import productService from "../service/productService";
@@ -24,12 +24,12 @@ const show = async (req: Request, res: Response) => {
   }
 };
 
-const insert = async (req: Request, res: Response) => {
+const insert = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const newProduct = await productService.insertProduct(req.body);
     res.status(200).send(newProduct);
   } catch (error: any) {
-    res.send(error.message ? { error: error.message } : error);
+    next(error);
   }
 };
 
