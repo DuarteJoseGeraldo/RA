@@ -111,7 +111,7 @@ const insertProduct = async (product: apiProduct) => {
 
     const id = await productRepository.insert(newProduct);
     const result: any = await findByID(id);
-    return result[0];
+    return result;
   } catch (error) {
     throw error;
   }
