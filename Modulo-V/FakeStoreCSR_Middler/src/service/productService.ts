@@ -128,7 +128,6 @@ const updateProduct = async (id: number, product: any) => {
   const newProduct = product;
 
   const findProduct: any = await productRepository.selectByIdWithJoin(id);
-  console.log(findProduct);
   if (!findProduct) {
     throw makeError({ message: "Product not Found", status: 400 });
   }
@@ -141,7 +140,6 @@ const updateProduct = async (id: number, product: any) => {
     const newCategory: any = {
       category_id: findCategory[0].id,
     };
-
     await productRepository.update(id, newCategory);
     delete newProduct.category;
   }
@@ -155,9 +153,11 @@ const updateProduct = async (id: number, product: any) => {
     await productRepository.update(id, newRating);
     delete newProduct.rating;
   }
-
-  await productRepository.update(id, newProduct);
+  if (Object.keys(newProduct).length) {
+    await productRepository.update(id, newProduct);
+  }
   const updated = await findByID(id);
+
   return updated;
 };
 

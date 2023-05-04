@@ -101,9 +101,9 @@ const categoryUpdateValidator = async (
 
     const categoryData = req.body;
 
-    const categorySchema = string().required();
+    const paramsSchema = string().required();
 
-    const paramsSchema = object({
+    const categorySchema = object({
       name: string().required(),
     });
 

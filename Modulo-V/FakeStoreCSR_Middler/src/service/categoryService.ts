@@ -67,18 +67,12 @@ const updateCategory = async (oldName: string, newData: Category) => {
 };
 
 const deleteCategory = async (name: string) => {
-  const fCategory: any = await findCategoryByName(name);
-  if (!fCategory[0]) {
-    throw makeError({
-      message: "Category not Found",
-      status: 400,
-    });
-  }
+  const findCategory: any = await findCategoryByName(name);
 
-  const fProduct: any = await productService.hasProductOfThisCartegory(
-    fCategory[0].id
+  const findProduct: any = await productService.hasProductOfThisCartegory(
+    findCategory[0].id
   );
-  if (fProduct) {
+  if (findProduct) {
     throw makeError({
       message:
         "There are still products of this category registered... Could not delete category",
@@ -86,10 +80,10 @@ const deleteCategory = async (name: string) => {
     });
   }
 
-  await categoryRepository.remove(fCategory[0].id);
+  await categoryRepository.remove(findCategory[0].id);
   const result = {
     message: "Category successfully deleted",
-    category: fCategory[0],
+    category: findCategory[0],
   };
   return result;
 };
