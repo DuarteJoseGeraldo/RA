@@ -10,17 +10,10 @@ const getAll = async () => {
 };
 
 const getProducts = async (name: string) => {
-  const fCategory: any = await categoryRepository.selectByName(name);
-  if (!fCategory[0]) {
-    throw makeError({
-      message: "Category not Found",
-      status: 400,
-    });
-  }
+  const fCategory: any = await findCategoryByName(name);
+
   const products: any = await productService.findByCategoryID(fCategory[0].id);
-  if (!products[0]) {
-    throw new Error("Product Not Found");
-  }
+
   return products;
 };
 
@@ -63,15 +56,13 @@ const insertCategory = async (category: Category) => {
 
 const updateCategory = async (oldName: string, newData: Category) => {
   const fCategory: any = await findCategoryByName(oldName);
-  if (!fCategory[0]) {
-    throw makeError({
-      message: "Category not Found",
-      status: 400,
-    });
-  }
+
   const id = parseInt(fCategory[0].id);
+
   await categoryRepository.update(id, newData);
+
   const result = await findCategoryById(id);
+
   return result;
 };
 

@@ -96,21 +96,25 @@ const categoryUpdateValidator = async (
   res: Response,
   next: NextFunction
 ) => {
-  const paramsData = req.params.name;
+  try {
+    const paramsData = req.params.name;
 
-  const categoryData = req.body;
+    const categoryData = req.body;
 
-  const categorySchema = string().required();
+    const categorySchema = string().required();
 
-  const paramsSchema = object({
-    name: string().required(),
-  });
+    const paramsSchema = object({
+      name: string().required(),
+    });
 
-  await categorySchema.validate(categoryData);
+    await categorySchema.validate(categoryData);
 
-  await paramsSchema.validate(paramsData);
+    await paramsSchema.validate(paramsData);
 
-  next();
+    next();
+  } catch (error) {
+    next(error);
+  }
 };
 
 const nameParamsValidatator = async (

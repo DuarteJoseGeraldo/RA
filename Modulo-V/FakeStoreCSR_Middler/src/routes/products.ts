@@ -6,9 +6,9 @@ import { category as categoryRoutes } from "./categories";
 
 const router: Router = Router();
 
-router.use("categories", categoriesRoutes);
+router.use("/categories", categoriesRoutes);
 
-router.use("category", categoryRoutes);
+router.use("/category", categoryRoutes);
 
 router.get("/", productsController.index);
 

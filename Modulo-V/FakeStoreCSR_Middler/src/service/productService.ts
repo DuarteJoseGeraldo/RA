@@ -54,21 +54,23 @@ const findByCategoryID = async (catId: number) => {
     catId
   );
 
-  if (!product) {
+  if (!product[0]) {
     throw makeError({ message: "Product not Found", status: 400 });
   }
-  const apiProduct = {
-    id: product.id,
-    title: product.title,
-    price: product.price,
-    category: product.category,
-    description: product.description,
-    image: product.image,
-    rating: {
-      rate: product.rate,
-      count: product.countRate,
-    },
-  };
+  const apiProduct = product.map((product: Product) => {
+    return {
+      id: product.id,
+      title: product.title,
+      price: product.price,
+      category: product.category,
+      description: product.description,
+      image: product.image,
+      rating: {
+        rate: product.rate,
+        count: product.countRate,
+      },
+    };
+  });
   return apiProduct;
 };
 
