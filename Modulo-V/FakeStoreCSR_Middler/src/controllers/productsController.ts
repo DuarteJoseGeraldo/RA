@@ -33,11 +33,25 @@ const show = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const updateAllData = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const id = parseInt(req.params.id);
+    const update = await productService.updateAllProduct(id, req.body);
+    res.status(200).send(update);
+  } catch (error: any) {
+    next(error);
+  }
+};
+
 const update = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const id = parseInt(req.params.id);
-    const update = await productService.updateProduct(id, req.body);
-    res.status(200).send(update);
+    const updated = await productService.updateProduct(id, req.body);
+    res.status(200).send(updated);
   } catch (error: any) {
     next(error);
   }
@@ -52,4 +66,4 @@ const remove = async (req: Request, res: Response, next: NextFunction) => {
     next(error);
   }
 };
-export default { insert, index, show, update, remove };
+export default { insert, index, show, updateAllData, update, remove };

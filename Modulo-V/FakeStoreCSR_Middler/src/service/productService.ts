@@ -28,50 +28,47 @@ const getAll = async () => {
 
 const findByID = async (productId: number) => {
   const id = productId;
-  const products: any = await productRepository.selectByIdWithJoin(id);
-  if (!products[0]) {
+  const product: any = await productRepository.selectByIdWithJoin(id);
+  if (!product) {
     throw makeError({ message: "Product not Found", status: 400 });
   }
 
-  const apiProduct = products.map((item: Product) => {
-    return {
-      id: item.id,
-      title: item.title,
-      price: item.price,
-      category: item.category,
-      description: item.description,
-      image: item.image,
-      rating: {
-        rate: item.rate,
-        count: item.countRate,
-      },
-    };
-  });
-  return apiProduct[0];
+  const apiProduct = {
+    id: product.id,
+    title: product.title,
+    price: product.price,
+    category: product.category,
+    description: product.description,
+    image: product.image,
+    rating: {
+      rate: product.rate,
+      count: product.countRate,
+    },
+  };
+
+  return apiProduct;
 };
 
 const findByCategoryID = async (catId: number) => {
-  const products: any = await productRepository.selectByCategoryIdWithJoin(
+  const product: any = await productRepository.selectByCategoryIdWithJoin(
     catId
   );
 
-  if (!products[0]) {
+  if (!product) {
     throw makeError({ message: "Product not Found", status: 400 });
   }
-  const apiProduct = products.map((item: Product) => {
-    return {
-      id: item.id,
-      title: item.title,
-      price: item.price,
-      category: item.category,
-      description: item.description,
-      image: item.image,
-      rating: {
-        rate: item.rate,
-        count: item.countRate,
-      },
-    };
-  });
+  const apiProduct = {
+    id: product.id,
+    title: product.title,
+    price: product.price,
+    category: product.category,
+    description: product.description,
+    image: product.image,
+    rating: {
+      rate: product.rate,
+      count: product.countRate,
+    },
+  };
   return apiProduct;
 };
 
@@ -102,7 +99,7 @@ const insertProduct = async (product: apiProduct) => {
   return result;
 };
 
-const updateProduct = async (id: number, product: apiProduct) => {
+const updateAllProduct = async (id: number, product: apiProduct) => {
   const fProduct: any = await productRepository.selectByIdWithJoin(id);
   if (!fProduct) {
     throw makeError({ message: "Product not Found", status: 400 });
@@ -125,15 +122,52 @@ const updateProduct = async (id: number, product: apiProduct) => {
   return updated;
 };
 
+const updateProduct = async (id: number, product: any) => {
+  const newProduct = product;
+
+  const findProduct: any = await productRepository.selectByIdWithJoin(id);
+  console.log(findProduct);
+  if (!findProduct) {
+    throw makeError({ message: "Product not Found", status: 400 });
+  }
+
+  if (newProduct.category) {
+    const findCategory: any = await categoryService.findCategoryByName(
+      newProduct.category
+    );
+
+    const newCategory: any = {
+      category_id: findCategory[0].id,
+    };
+
+    await productRepository.update(id, newCategory);
+    delete newProduct.category;
+  }
+
+  if (newProduct.rating) {
+    const newRating: any = {
+      rate: newProduct.rating.rate,
+      countRate: newProduct.rating.count,
+    };
+
+    await productRepository.update(id, newRating);
+    delete newProduct.rating;
+  }
+
+  await productRepository.update(id, newProduct);
+  const updated = await findByID(id);
+  return updated;
+};
+
 const deleteProduct = async (id: number) => {
-  const fProduct: any = await productRepository.selectByIdWithJoin(id);
-  if (!fProduct[0]) {
+  const findProduct: any = await productRepository.selectByIdWithJoin(id);
+  if (!findProduct) {
     throw makeError({ message: "Product not Found", status: 400 });
   }
   await productRepository.remove(id);
   return {
     message: "Product successfully deleted",
-    prduct: fProduct[0],
+    prduct: findProduct,
   };
 };
 
@@ -143,6 +177,7 @@ export default {
   findByCategoryID,
   findByID,
   insertProduct,
-  updateProduct,
+  updateAllProduct,
   deleteProduct,
+  updateProduct,
 };

@@ -74,7 +74,7 @@ const selectByIdWithJoin = async (productId: number) => {
     .join("categories", "categories.id", "=", "products.category_id")
     .where({ "products.id": id });
 
-  return product;
+  return product[0];
 };
 
 const selectByCategoryIdWithJoin = async (catId: number) => {
@@ -102,7 +102,7 @@ const insert = async (product: ProductWithCategoryId) => {
   return newProductId[0];
 };
 
-const update = async (id: number, product: ProductWithCategoryId) => {
+const update = async (id: number, product: any) => {
   const newData = await knexInstance("products").update(product).where({ id });
   return product;
 };
