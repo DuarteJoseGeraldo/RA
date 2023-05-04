@@ -2,28 +2,32 @@ import { Router } from "express";
 import categoriesController from "../controllers/categoriesController";
 import dataValidator from "../middlewares/dataValidator";
 
-const router: Router = Router();
+const categories: Router = Router();
+const category: Router = Router();
 
-router.get("/", categoriesController.index);
-router.get(
+category.get(
   "/:name",
   dataValidator.nameParamsValidatator,
   categoriesController.show
 ); //mostra todos os itens dessa categoria
-router.post(
+categories.get("/", categoriesController.index);
+
+categories.post(
   "/",
   dataValidator.categoryDataValidator,
   categoriesController.insert
 );
-router.put(
+
+categories.put(
   "/:name",
   dataValidator.categoryUpdateValidator,
   categoriesController.update
 );
-router.delete(
+
+categories.delete(
   "/:name",
   dataValidator.nameParamsValidatator,
   categoriesController.remove
 );
 
-export { router };
+export { categories as router, category };
