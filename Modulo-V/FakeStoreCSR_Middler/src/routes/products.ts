@@ -2,7 +2,7 @@ import { Router } from "express";
 import productsController from "../controllers/productsController";
 import dataValidator from "../middlewares/dataValidator";
 import { router as categoriesRoutes } from "./categories";
-import { category as categoryRoutes } from "./categories";
+import { category as categoryRoutes } from "./category";
 
 const router: Router = Router();
 

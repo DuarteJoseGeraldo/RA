@@ -3,13 +3,7 @@ import categoriesController from "../controllers/categoriesController";
 import dataValidator from "../middlewares/dataValidator";
 
 const categories: Router = Router();
-const category: Router = Router();
 
-category.get(
-  "/:name",
-  dataValidator.nameParamsValidatator,
-  categoriesController.show
-); //mostra todos os itens dessa categoria
 categories.get("/", categoriesController.index);
 
 categories.post(
@@ -30,4 +24,4 @@ categories.delete(
   categoriesController.remove
 );
 
-export { categories as router, category };
+export { categories as router };
