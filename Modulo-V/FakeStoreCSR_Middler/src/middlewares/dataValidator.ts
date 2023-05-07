@@ -38,14 +38,45 @@ const productUpdateValidator = async (
     const paramsSchema = number().min(0).required();
 
     const productSchema = object({
-      title: string().required(),
+      title: string().min(1).required(),
       price: number().min(0.1).required(),
-      category: string().required(),
-      description: string().required(),
-      image: string().required(),
+      category: string().min(1).required(),
+      description: string().min(1).required(),
+      image: string().min(1).required(),
       rating: object({
         rate: number().min(0).required(),
         count: number().min(0).required(),
+      }),
+    });
+
+    await productSchema.validate(productData);
+    await paramsSchema.validate(paramsData);
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+const productPathValidator = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const paramsData = parseInt(req.params.id);
+    const productData = req.body;
+
+    const paramsSchema = number().min(0).required();
+
+    const productSchema = object({
+      title: string().min(1),
+      price: number().min(0.1),
+      category: string().min(1),
+      description: string().min(1),
+      image: string().min(1),
+      rating: object({
+        rate: number().min(0),
+        count: number().min(0),
       }),
     });
 
@@ -135,6 +166,26 @@ const nameParamsValidatator = async (
   }
 };
 
+const userDataValidator = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userData = req.body;
+
+    const userSchema = object({
+      userName: string().required(),
+      userPassword: string().min(8).required(),
+    });
+
+    await userSchema.validate(userData);
+    next();
+  } catch (error) {
+    next(error);
+  }
+};
+
 export default {
   productDataValidator,
   productUpdateValidator,
@@ -142,4 +193,6 @@ export default {
   categoryDataValidator,
   categoryUpdateValidator,
   nameParamsValidatator,
+  userDataValidator,
+  productPathValidator,
 };

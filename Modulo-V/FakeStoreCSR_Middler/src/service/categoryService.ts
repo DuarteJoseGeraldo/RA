@@ -55,9 +55,20 @@ const insertCategory = async (category: Category) => {
 };
 
 const updateCategory = async (oldName: string, newData: Category) => {
-  const fCategory: any = await findCategoryByName(oldName);
+  const findCategory: any = await findCategoryByName(oldName);
 
-  const id = parseInt(fCategory[0].id);
+  const verifyNewCategory: any = await categoryRepository.selectByName(
+    newData.name
+  );
+
+  if (verifyNewCategory[0]) {
+    throw makeError({
+      message: "Category name already registered",
+      status: 400,
+    });
+  }
+
+  const id = parseInt(findCategory[0].id);
 
   await categoryRepository.update(id, newData);
 

@@ -1,33 +1,50 @@
 import { Router } from "express";
 import productsController from "../controllers/productsController";
 import dataValidator from "../middlewares/dataValidator";
+import tokenValidator from "../middlewares/tokenValidator";
 import { router as categoriesRoutes } from "./categories";
 import { category as categoryRoutes } from "./category";
 
-const router: Router = Router();
+const productsRoutes: Router = Router();
 
-router.use("/categories", categoriesRoutes);
+productsRoutes.use("/categories", categoriesRoutes);
 
-router.use("/category", categoryRoutes);
+productsRoutes.use("/category", categoryRoutes);
 
-router.get("/", productsController.index);
+productsRoutes.get("/", productsController.index);
 
-router.get("/:id", dataValidator.idParamsValidator, productsController.show);
-
-router.post("/", dataValidator.productDataValidator, productsController.insert);
-
-router.put(
+productsRoutes.get(
   "/:id",
+  dataValidator.idParamsValidator,
+  productsController.show
+);
+
+productsRoutes.post(
+  "/",
+  tokenValidator.userTokenValidator,
+  dataValidator.productDataValidator,
+  productsController.insert
+);
+
+productsRoutes.put(
+  "/:id",
+  tokenValidator.userTokenValidator,
   dataValidator.productUpdateValidator,
   productsController.updateAllData
 );
 
-router.delete(
+productsRoutes.delete(
   "/:id",
+  tokenValidator.userTokenValidator,
   dataValidator.idParamsValidator,
   productsController.remove
 );
 
-router.patch("/:id", productsController.update);
+productsRoutes.patch(
+  "/:id",
+  tokenValidator.userTokenValidator,
+  dataValidator.productPathValidator,
+  productsController.update
+);
 
-export { router };
+export { productsRoutes };

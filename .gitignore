@@ -1,3 +1,5 @@
 node_modules
 
 fakeStore.sqlite3
+
+.env
