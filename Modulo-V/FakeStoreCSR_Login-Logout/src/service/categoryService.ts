@@ -83,6 +83,7 @@ const deleteCategory = async (name: string) => {
   const findProduct: any = await productService.hasProductOfThisCartegory(
     findCategory[0].id
   );
+
   if (findProduct) {
     throw makeError({
       message:

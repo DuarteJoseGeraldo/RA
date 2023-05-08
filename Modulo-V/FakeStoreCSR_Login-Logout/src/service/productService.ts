@@ -57,6 +57,8 @@ const findByCategoryID = async (catId: number) => {
   if (!product[0]) {
     throw makeError({ message: "Product not Found", status: 400 });
   }
+
+  console.log(product);
   const apiProduct = product.map((product: Product) => {
     return {
       id: product.id,
