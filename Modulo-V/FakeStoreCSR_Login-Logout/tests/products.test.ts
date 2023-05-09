@@ -3,6 +3,7 @@ import categoryService from "../src/service/categoryService";
 import productService from "../src/service/productService";
 import productRepository from "../src/repository/productRepository";
 import categoryRepository from "../src/repository/categoryRepository";
+import { productsRoutes } from "../src/routes/products";
 
 describe("Teste do Service de Produtos", () => {
   it("Deve retornar um produto especifico", async () => {
@@ -97,5 +98,38 @@ describe("Teste do Service de Produtos", () => {
     const result = await productService.updateProduct(20, { category: "food" });
 
     expect(result).toMatchObject({ category: "food" });
+  });
+
+  it("Deleta um produto especifico", async () => {
+    jest.spyOn(productRepository, "selectByIdWithJoin").mockResolvedValueOnce({
+      id: 20,
+      title: "Um Produto",
+      price: 250,
+      description: "produto de teste",
+      category: "electronics",
+      image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+      rate: 5,
+      countRate: 300,
+    });
+
+    jest.spyOn(productRepository, "remove").mockResolvedValueOnce(1);
+
+    const result = await productService.deleteProduct(20);
+
+    console.log(result);
+
+    expect(result).toMatchObject({
+      message: "Product successfully deleted",
+      prduct: {
+        id: 20,
+        title: "Um Produto",
+        price: 250,
+        description: "produto de teste",
+        category: "electronics",
+        image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+        rate: 5,
+        countRate: 300,
+      },
+    });
   });
 });

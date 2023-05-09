@@ -165,7 +165,7 @@ const updateProduct = async (id: number, product: any) => {
 };
 
 const deleteProduct = async (id: number) => {
-  const findProduct: any = await productRepository.selectByIdWithJoin(id);
+  const findProduct = await productRepository.selectByIdWithJoin(id);
   if (!findProduct) {
     throw makeError({ message: "Product not Found", status: 400 });
   }

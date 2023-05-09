@@ -57,7 +57,7 @@ const indexWithJoin = async () => {
   return product;
 };
 
-const selectByIdWithJoin = async (productId: number) => {
+const selectByIdWithJoin = async (productId: number): Promise<Product> => {
   const id = productId;
   const product: Product[] = await knexInstance("products")
     .select(
