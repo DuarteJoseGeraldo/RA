@@ -28,10 +28,11 @@ const getAll = async () => {
 
 const findByID = async (productId: number) => {
   const id = productId;
-  const product: any = await productRepository.selectByIdWithJoin(id);
+  const product = await productRepository.selectByIdWithJoin(id);
   if (!product) {
     throw makeError({ message: "Product not Found", status: 400 });
   }
+  console.log(product);
 
   const apiProduct = {
     id: product.id,
