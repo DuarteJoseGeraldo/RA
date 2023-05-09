@@ -82,7 +82,7 @@ const logout = async (userName: string) => {
     });
   }
 
-  await usersRepository.updateUserToken(userName, "logout");
+  await usersRepository.updateUserToken(userName, "Disconected");
 
   return true;
 };

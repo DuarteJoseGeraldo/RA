@@ -1,6 +1,7 @@
 import { Router } from "express";
 import usersController from "../controllers/usersController";
 import dataValidator from "../middlewares/dataValidator";
+import tokenValidator from "../middlewares/tokenValidator";
 
 const userRoutes: Router = Router();
 
@@ -18,6 +19,7 @@ userRoutes.get(
 
 userRoutes.get(
   "/logout",
+  tokenValidator.userLogoutTokenValidator,
   dataValidator.userNameDataValidator,
   usersController.logout
 );
