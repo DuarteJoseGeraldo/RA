@@ -56,4 +56,46 @@ describe("Teste do Service de Produtos", () => {
 
     expect(result).toMatchObject({ id: 1 });
   });
+
+  it("Deve atualizar a categoria de um produto", async () => {
+    jest.spyOn(productRepository, "selectByIdWithJoin").mockResolvedValueOnce({
+      id: 20,
+      title: "Um produto",
+      price: 250,
+      description: "produto de teste",
+      category: "electronics",
+      image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+      rate: 5,
+      countRate: 300,
+    });
+    jest
+      .spyOn(categoryRepository, "selectByName")
+      .mockResolvedValueOnce([{ id: 2, name: "foods" }]);
+
+    jest.spyOn(productRepository, "update").mockResolvedValueOnce({
+      id: 20,
+      title: "Um produto",
+      price: 250,
+      description: "produto de teste",
+      category: "food",
+      image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+      rate: 5,
+      countRate: 300,
+    });
+
+    jest.spyOn(productRepository, "selectByIdWithJoin").mockResolvedValueOnce({
+      id: 20,
+      title: "Um produto",
+      price: 250,
+      description: "produto de teste",
+      category: "food",
+      image: "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+      rate: 5,
+      countRate: 300,
+    });
+
+    const result = await productService.updateProduct(20, { category: "food" });
+
+    expect(result).toMatchObject({ category: "food" });
+  });
 });
