@@ -11,7 +11,9 @@ export type User = {
 };
 
 const insertUser = async (user: User): Promise<number> => {
-  const newUserId = await knexInstance("users").insert(user);
+  const newUserId = await knexInstance("users")
+    .insert(user)
+    .returning(["id", "userName"]);
   return newUserId[0];
 };
 
